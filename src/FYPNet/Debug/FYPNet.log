@@ -1,0 +1,8 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (FYPNet.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Main.cpp
+e:\my files\projects\fypnet\fypnet\main.cpp(18): warning C4065: switch statement contains 'default' but no 'case' labels
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  SocketManager.cpp
+  FYPNet.vcxproj -> E:\My Files\Projects\FYPNet\Debug\Networking.exe
+  FYPNet.vcxproj -> E:\My Files\Projects\FYPNet\Debug\Networking.pdb (Partial PDB)
