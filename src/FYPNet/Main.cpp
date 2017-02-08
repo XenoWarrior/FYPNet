@@ -1,4 +1,5 @@
 #include <memory>
+#include <algorithm>
 #include <iostream>
 
 #include "json.hpp"
@@ -44,12 +45,33 @@ int main()
 	while (server_running)
 	{
 		int new_client = socket_manager->Accept(true);
-		if (new_client != 0)
+		if (new_client > -1)
 		{
+			std::cout << "Accepted new client!" << std::endl;
 			socket_manager->GetSocket(new_client)->GetBuffer(0)->AddValue("message", "Hello!");
-			socket_manager->GetSocket(new_client)->GetBuffer(0)->AddValue("x", 100);
-			socket_manager->GetSocket(new_client)->GetBuffer(0)->AddValue("y", 100);
 			socket_manager->GetSocket(new_client)->Dispatch(0);
+		}
+
+		for (int i = 0; i < socket_manager->GetSocketList().size(); i++)
+		{
+			int message_size = socket_manager->GetSocket(i)->ReceiveMessage();
+			if (message_size == 0)
+			{
+				std::cout << "Socket: " << socket_manager->GetSocket(i)->GetSocket() << " disconnected." << std::endl;
+				socket_manager->Disconnect(i);
+			}
+
+			if (message_size > 0)
+			{
+				std::string message = socket_manager->GetSocket(i)->ReadMessage(message_size);
+				std::cout << "Socket: " << socket_manager->GetSocket(i)->GetSocket() << " said: " << message << std::endl;
+
+				if (message == std::string("Hello\r"))
+				{
+					socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("message", "Hello again!");
+					socket_manager->GetSocket(i)->Dispatch(0);
+				}
+			}
 		}
 	}
 

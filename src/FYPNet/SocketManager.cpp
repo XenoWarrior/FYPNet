@@ -38,11 +38,35 @@ int SocketManager::Close()
 }
 
 ///<summary>
-/// Simply wraps sleep into the socket manager, this is only used for testing purposes.
+/// Connects as a client to a server.
+/// Returns:
+/// -- FYP_SOCK_SUCCESS on success
+/// -- FYP_SOCK_FAILIURE on failiure
 ///</summary>
-void SocketManager::Wait(int time)
+int SocketManager::Connect()
 {
-	Sleep(time);
+	return 0;
+}
+
+///<summary>
+/// Disconnects a client connection to the server.
+/// Returns:
+/// -- FYP_SOCK_SUCCESS on success
+/// -- FYP_SOCK_FAILIURE on failiure
+///</summary>
+int SocketManager::Disconnect(int socket_id)
+{
+	int result = shutdown(socket_list[socket_id]->GetSocket(), SD_SEND);
+	if (result == SOCKET_ERROR)
+	{
+		printf("shutdown failed: %d\n", WSAGetLastError());
+		return FYP_SOCK_FAILURE;
+	}
+
+	closesocket(socket_list[socket_id]->GetSocket());
+	socket_list.erase(socket_list.begin() + socket_id);
+
+	return FYP_SOCK_SUCCESS;
 }
 
 ///<summary>
@@ -82,8 +106,6 @@ int SocketManager::Listen(int port, int cons, bool mode)
 		return FYP_SOCK_FAILURE;
 	}
 
-	socket_list.push_back(std::make_shared<Socket>(listen_socket));
-
 	return FYP_SOCK_SUCCESS;
 }
 
@@ -103,7 +125,7 @@ int SocketManager::Accept(bool mode)
 	if (socket_in == INVALID_SOCKET)
 	{
 		closesocket(socket_in);
-		return 0;
+		return -1;
 	}
 
 	socket_list.push_back(std::make_shared<Socket>(socket_in));
@@ -111,6 +133,25 @@ int SocketManager::Accept(bool mode)
 	return socket_list.size() - 1;
 }
 
+///<summary>
+/// Simply wraps sleep into the socket manager, this is only used for testing purposes.
+///</summary>
+void SocketManager::Wait(int time)
+{
+	Sleep(time);
+}
+
+///<summary>
+/// Returns the list of sockets connected to the server.
+///</summary>
+std::vector<std::shared_ptr<Socket>> SocketManager::GetSocketList()
+{
+	return socket_list;
+}
+
+///<summary>
+/// Gets a socket from a specified ID
+///</summary>
 std::shared_ptr<Socket> SocketManager::GetSocket(int socket_id)
 {
 	return socket_list[socket_id];

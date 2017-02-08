@@ -22,11 +22,14 @@ public:
 	int Close();
 
 	int Connect();
+	int Disconnect(int socket_id);
+	int Accept(bool mode);
+
 	int Listen(int port, int max_connections, bool mode);
 
 	void Wait(int time_ms);
-	int Accept(bool mode);
 
+	std::vector<std::shared_ptr<Socket>> GetSocketList();
 	std::shared_ptr<Socket> GetSocket(int socket_id);
 
 private:
