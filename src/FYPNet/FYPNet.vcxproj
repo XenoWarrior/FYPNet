@@ -22,7 +22,7 @@
     <ProjectGuid>{0E790097-248A-4DB0-9F14-F8FB54E6A195}</ProjectGuid>
     <RootNamespace>FYPNet</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>Networking</ProjectName>
+    <ProjectName>FYPNet</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -111,11 +111,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buffer.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="Shared.h" />
+    <ClInclude Include="Socket.h" />
     <ClInclude Include="SocketManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

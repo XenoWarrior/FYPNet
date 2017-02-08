@@ -5,11 +5,6 @@ SocketManager::SocketManager()
 
 }
 
-SocketManager::~SocketManager()
-{
-
-}
-
 ///<summary>
 /// Initialises Winsock2 for use in server or client applications. 
 /// Returns:
@@ -24,8 +19,6 @@ int SocketManager::Initialise()
 		printf("WSAStartup failed: %d\n", result);
 		return FYP_SOCK_FAILURE;
 	}
-
-	socket_list.push_back(SOCKET());
 
 	return FYP_SOCK_SUCCESS;
 }
@@ -89,42 +82,36 @@ int SocketManager::Listen(int port, int cons, bool mode)
 		return FYP_SOCK_FAILURE;
 	}
 
+	socket_list.push_back(std::make_shared<Socket>(listen_socket));
+
 	return FYP_SOCK_SUCCESS;
 }
 
 ///<summary>
 /// Accepts incoming connections.
 /// Returns:
-/// -- SOCKET on success
-/// -- NULL on failiure
+/// -- int on success (socket ID)
+/// -- NULL on failiure (no socket)
 ///</summary>
-SOCKET SocketManager::Accept(int mode)
+int SocketManager::Accept(bool mode)
 {
 	int socket_size = sizeof(SOCKADDR_IN);
+
 	SOCKADDR_IN socket_address;
 	SOCKET socket_in = accept(listen_socket, (SOCKADDR *)&socket_address, &socket_size);
 
 	if (socket_in == INVALID_SOCKET)
 	{
 		closesocket(socket_in);
-		return NULL;
+		return 0;
 	}
 
-	socket_list.push_back(socket_in);
-	return socket_in;
+	socket_list.push_back(std::make_shared<Socket>(socket_in));
+
+	return socket_list.size() - 1;
 }
 
-void SocketManager::AddValue(std::string s)
+std::shared_ptr<Socket> SocketManager::GetSocket(int socket_id)
 {
-
-}
-
-void SocketManager::AddValue(int i)
-{
-
-}
-
-void SocketManager::Send(SOCKET s, int buffid)
-{
-	send(s, buffer_list.c_str(), strlen(buffer_list.c_str()), 0);
+	return socket_list[socket_id];
 }

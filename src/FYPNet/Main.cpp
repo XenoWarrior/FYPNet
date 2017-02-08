@@ -1,6 +1,7 @@
 #include <memory>
 #include <iostream>
 
+#include "json.hpp"
 #include "SocketManager.h"
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -42,10 +43,13 @@ int main()
 
 	while (server_running)
 	{
-		SOCKET new_client = socket_manager->Accept(true);
-		if (new_client != NULL)
+		int new_client = socket_manager->Accept(true);
+		if (new_client != 0)
 		{
-			socket_manager->Send(new_client, 0);
+			socket_manager->GetSocket(new_client)->GetBuffer(0)->AddValue("message", "Hello!");
+			socket_manager->GetSocket(new_client)->GetBuffer(0)->AddValue("x", 100);
+			socket_manager->GetSocket(new_client)->GetBuffer(0)->AddValue("y", 100);
+			socket_manager->GetSocket(new_client)->Dispatch(0);
 		}
 	}
 
