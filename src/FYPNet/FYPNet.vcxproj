@@ -113,18 +113,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="ClientLogic.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PacketData.cpp" />
+    <ClCompile Include="ServerLogic.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="ClientLogic.h" />
     <ClInclude Include="FYPClientStatus.h" />
     <ClInclude Include="FYPPacketType.h" />
     <ClInclude Include="FYPSocketStatus.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="PacketData.h" />
+    <ClInclude Include="ServerLogic.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="SocketManager.h" />
   </ItemGroup>

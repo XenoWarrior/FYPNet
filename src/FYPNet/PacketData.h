@@ -1,3 +1,6 @@
+#ifndef PacketData_H
+#define PacketData_H
+
 #include <map>
 
 #include "json.hpp"
@@ -18,3 +21,5 @@ private:
 	bool packet_error_bool;
 	std::string packet_error_message;
 };
+
+#endif

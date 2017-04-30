@@ -42,6 +42,12 @@
     <ClCompile Include="PacketData.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="ClientLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -67,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="FYPSocketStatus.h">
       <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientLogic.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
