@@ -23,7 +23,7 @@ public:
 	int Initialise();
 	int Close();
 
-	int Connect();
+	int Connect(std::string ip, int port);
 	int Disconnect(int socket_id);
 	int Accept(bool mode);
 
@@ -39,6 +39,8 @@ private:
 	SOCKET listen_socket = INVALID_SOCKET;
 
 	std::vector<std::shared_ptr<Socket>> socket_list;
+
+	struct sockaddr_in server_socket;
 
 };
 

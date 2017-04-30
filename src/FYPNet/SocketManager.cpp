@@ -43,9 +43,25 @@ int SocketManager::Close()
 /// -- FYP_SOCK_SUCCESS on success
 /// -- FYP_SOCK_FAILIURE on failiure
 ///</summary>
-int SocketManager::Connect()
+int SocketManager::Connect(std::string ip, int port)
 {
-	return 0;
+	if ((listen_socket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+	{
+		printf("create socket failed: %d", WSAGetLastError());
+		return FYP_SOCK_FAILURE;
+	}
+
+	server_socket.sin_addr.s_addr = inet_addr(ip.c_str());
+	server_socket.sin_family = AF_INET;
+	server_socket.sin_port = htons(port);
+
+	if (connect(listen_socket, (struct sockaddr *)&server_socket, sizeof(server_socket)) < 0)
+	{
+		printf("failed to connect");
+		return FYP_SOCK_FAILURE;
+	}
+
+	return FYP_SOCK_SUCCESS;
 }
 
 ///<summary>
