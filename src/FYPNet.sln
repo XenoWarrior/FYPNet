@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FYPNet", "FYPNet\FYPNet.vcxproj", "{0E790097-248A-4DB0-9F14-F8FB54E6A195}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FYPNetCore", "FYPNet\FYPNet.vcxproj", "{0E790097-248A-4DB0-9F14-F8FB54E6A195}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,7 @@
 #include "Socket.h"
 
+#include <iostream>
+
 /**
 * Constructor
 */
@@ -29,6 +31,8 @@ std::string Socket::ReadMessage(int size)
 	{
 		message += message_in[i];
 	}
+
+	std::cout << "Socket::ReadMessage: " << message << std::endl;
 
 	return message;
 }
@@ -66,3 +70,4 @@ SOCKET Socket::GetSocket()
 {
 	return socket;
 }
+
