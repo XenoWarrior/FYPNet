@@ -1,3 +1,11 @@
+/**
+* PacketData.h
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #ifndef PacketData_H
 #define PacketData_H
 

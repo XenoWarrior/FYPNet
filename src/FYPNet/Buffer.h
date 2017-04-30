@@ -1,3 +1,11 @@
+/**
+* Buffer.h
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #ifndef Buffer_H
 #define Buffer_H
 
@@ -26,4 +34,4 @@ private:
 
 };
 
-#endif // !Buffer_H
+#endif

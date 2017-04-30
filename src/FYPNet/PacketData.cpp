@@ -1,3 +1,11 @@
+/**
+* PacketData.cpp
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #include "PacketData.h"
 
 PacketData::PacketData(std::string json)

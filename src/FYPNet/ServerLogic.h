@@ -1,3 +1,11 @@
+/**
+* ServerLogic.h
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #ifndef ServerLogic_H
 #define ServerLogic_H
 

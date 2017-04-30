@@ -1,3 +1,11 @@
+/**
+* Buffer.cpp
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #include "Buffer.h"
 
 /**

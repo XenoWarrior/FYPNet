@@ -1,3 +1,11 @@
+/**
+* SocketManager.h
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #ifndef SocketManager_H
 #define SocketManager_H
 
@@ -49,4 +57,4 @@ private:
 	bool is_client = false;
 };
 
-#endif // !SocketManager_H
+#endif

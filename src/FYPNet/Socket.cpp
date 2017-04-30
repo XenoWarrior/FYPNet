@@ -1,6 +1,12 @@
-#include "Socket.h"
+/**
+* Socket.cpp
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
 
-#include <iostream>
+#include "Socket.h"
 
 /**
 * Constructor
@@ -68,4 +74,3 @@ SOCKET Socket::GetSocket()
 {
 	return socket;
 }
-

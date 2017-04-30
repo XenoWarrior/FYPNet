@@ -1,3 +1,11 @@
+/**
+* Socket.h
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #ifndef Socket_H
 #define Socket_H
 
@@ -35,4 +43,4 @@ private:
 	char message_in[8195];
 };
 
-#endif // !Socket_H
+#endif 

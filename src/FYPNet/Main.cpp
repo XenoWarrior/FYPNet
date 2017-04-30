@@ -26,12 +26,15 @@ BOOL WINAPI ConsoleHandler(DWORD signal)
 */
 int main()
 {
+	// Server type input and error flag
 	bool error = false;
 	int type = 0;
 
+	// Take input values from console
 	std::cout << "Select Logic:\n>> 0: Server\n>> 1: Client\n(Enter Option): ";
 	std::cin >> type;
 
+	// Identify type, give error if type does not exist
 	switch (type)
 	{
 		case 0:
@@ -48,18 +51,23 @@ int main()
 			break;
 	}
 
+	// Register termination signal handler
 	if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)ConsoleHandler, TRUE))
 	{
 		std::cout << "Unable to register console handler" << std::endl;
 		error = true;
 	}
 
+	// Run the selected logic component
 	if (!error)
 	{
 		logic->Run();
 	}
 
-	Sleep(1000);
 
+	// For exit, gives some time to see output
+	Sleep(5000);
+
+	// End program
 	return 0;
 }

@@ -1,3 +1,11 @@
+/**
+* SocketManager.cpp
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #include "SocketManager.h"
 
 SocketManager::SocketManager()
@@ -5,12 +13,12 @@ SocketManager::SocketManager()
 
 }
 
-///<summary>
-/// Initialises Winsock2 for use in server or client applications. 
-/// Returns:
-/// -- SOCK_SUCCESS on success 
-/// -- SOCK_FAILURE on failure
-///</summary>
+/**
+* Initialises Winsock2 for use in server or client applications. 
+* Returns:
+* -- SOCK_SUCCESS on success 
+* -- SOCK_FAILURE on failure
+*/
 int SocketManager::Initialise()
 {
 	int result = WSAStartup(MAKEWORD(2, 2), &wsa_data);
@@ -23,12 +31,12 @@ int SocketManager::Initialise()
 	return FYP_SOCK_SUCCESS;
 }
 
-///<summary>
-/// Cleans up the client or server socket for closure.
-/// Returns:
-/// -- FYP_SOCK_SUCCESS on success
-/// -- FYP_SOCK_FAILIURE on failiure
-///</summary>
+/**
+* Cleans up the client or server socket for closure.
+* Returns:
+* -- FYP_SOCK_SUCCESS on success
+* -- FYP_SOCK_FAILIURE on failiure
+*/
 int SocketManager::Close()
 {
 	closesocket(listen_socket);
@@ -37,12 +45,12 @@ int SocketManager::Close()
 	return FYP_SOCK_SUCCESS;
 }
 
-///<summary>
-/// Connects as a client to a server.
-/// Returns:
-/// -- FYP_SOCK_SUCCESS on success
-/// -- FYP_SOCK_FAILIURE on failiure
-///</summary>
+/**
+* Connects as a client to a server.
+* Returns:
+* -- FYP_SOCK_SUCCESS on success
+* -- FYP_SOCK_FAILIURE on failiure
+*/
 int SocketManager::Connect(std::string ip, int port)
 {
 	client_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -73,12 +81,12 @@ int SocketManager::Connect(std::string ip, int port)
 	return FYP_SOCK_SUCCESS;
 }
 
-///<summary>
-/// Disconnects a client connection to the server.
-/// Returns:
-/// -- FYP_SOCK_SUCCESS on success
-/// -- FYP_SOCK_FAILIURE on failiure
-///</summary>
+/**
+* Disconnects a client connection to the server.
+* Returns:
+* -- FYP_SOCK_SUCCESS on success
+* -- FYP_SOCK_FAILIURE on failiure
+*/
 int SocketManager::Disconnect(int socket_id)
 {
 	int result = shutdown(socket_list[socket_id]->GetSocket(), SD_SEND);
@@ -94,12 +102,12 @@ int SocketManager::Disconnect(int socket_id)
 	return FYP_SOCK_SUCCESS;
 }
 
-///<summary>
-/// Sets the application as a server to listen for incoming client connections.
-/// Returns:
-/// -- FYP_SOCK_SUCCESS on success
-/// -- FYP_SOCK_FAILIURE on failiure
-///</summary>
+/**
+* Sets the application as a server to listen for incoming client connections.
+* Returns:
+* -- FYP_SOCK_SUCCESS on success
+* -- FYP_SOCK_FAILIURE on failiure
+*/
 int SocketManager::Listen(int port, int cons, bool mode)
 {
 	listen_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -134,12 +142,12 @@ int SocketManager::Listen(int port, int cons, bool mode)
 	return FYP_SOCK_SUCCESS;
 }
 
-///<summary>
-/// Accepts incoming connections.
-/// Returns:
-/// -- int on success (socket ID)
-/// -- NULL on failiure (no socket)
-///</summary>
+/**
+* Accepts incoming connections.
+* Returns:
+* -- int on success (socket ID)
+* -- NULL on failiure (no socket)
+*/
 int SocketManager::Accept(bool mode)
 {
 	int socket_size = sizeof(SOCKADDR_IN);
@@ -158,34 +166,34 @@ int SocketManager::Accept(bool mode)
 	return socket_list.size() - 1;
 }
 
-///<summary>
-/// Simply wraps sleep into the socket manager, this is only used for testing purposes.
-///</summary>
+/**
+* Simply wraps sleep into the socket manager, this is only used for testing purposes.
+*/
 void SocketManager::Wait(int time)
 {
 	Sleep(time);
 }
 
-///<summary>
-/// Returns the list of sockets connected to the server.
-///</summary>
+/**
+* Returns the list of sockets connected to the server.
+*/
 std::vector<std::shared_ptr<Socket>> SocketManager::GetSocketList()
 {
 	return socket_list;
 }
 
-///<summary>
-/// Gets a socket from a specified ID
-///</summary>
+/**
+* Gets a socket from a specified ID
+*/
 std::shared_ptr<Socket> SocketManager::GetSocket(int socket_id)
 {
 	return socket_list[socket_id];
 }
 
 
-///<summary>
-/// Returns the socket, used if client
-///</summary>
+/**
+* Returns the socket, used if client
+*/
 std::shared_ptr<Socket> SocketManager::ClientSocket()
 {
 	if (is_client)
@@ -198,9 +206,9 @@ std::shared_ptr<Socket> SocketManager::ClientSocket()
 	}
 }
 
-///<summary>
-/// Returns the socket, used if client
-///</summary>
+/**
+* Returns the socket, used if client
+*/
 void SocketManager::ClientDisconnect()
 {
 	shutdown(main_client_socket->GetSocket(), SD_SEND);

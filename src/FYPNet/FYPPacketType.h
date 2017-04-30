@@ -1,3 +1,11 @@
+/**
+* FYPPacketType.h
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+*/
+
 #ifndef FYPPacketType_H
 #define FYPPacketType_H
 

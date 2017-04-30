@@ -1,3 +1,23 @@
+/**
+* ClientLogic.cpp
+*
+* Author: Ashley Scott
+* Date: 2016 - 2017
+*
+* Demonstration of a client running the FYPNet core API (built on WinSock2).
+* Shows how to initialise a client using the API and connect to a server.
+*
+* This API uses JSON to handle all of the data transport between the client and server,
+* as well as sending the data, a tag "type" is sent with the value to identify which datatype the value is.
+* This should work well with all programming languages which can decode JSON strings.
+*
+* As a developer of a server, regardless of which language, you should be able to "cast" the string values into their types easily.
+*
+* Comments in ClientLogic::Run() should help guide through the flow of setting up a client.
+*
+* TODO: Currently, there is one static socket for a client. Urgently needs updating to accept multiple outgoing client sockets to different servers.
+*/
+
 #include "ClientLogic.h"
 
 ClientLogic::ClientLogic() : LogicInterface()
@@ -5,15 +25,26 @@ ClientLogic::ClientLogic() : LogicInterface()
 	socket_manager = std::make_shared<SocketManager>();
 }
 
+/**
+* ClientLogic::Run()
+*
+* Handles configuring of a client to connect to a server.
+* This code pretty much runs identical to ServerLogic. Follow the flow of ServerLogic for further information.
+*/
 int ClientLogic::Run()
 {
+	// Used within the client to keep track of client sockets.
+	// A client can connect to multiple different servers.
+	socket_manager = std::make_shared<SocketManager>();
 
+	// Initialise the API (WinSock2)
 	if (!socket_manager->Initialise())
 	{
 		std::cout << "Unable to initialise socket manager." << std::endl;
 		engine_running = false;
 	}
 
+	// Connect to a server on port 12500
 	if (!socket_manager->Connect("localhost", 12500))
 	{
 		std::cout << "Unable to connect to server." << std::endl;
@@ -30,8 +61,10 @@ int ClientLogic::Run()
 
 	}
 
+	// While there is no error
 	while (engine_running)
 	{
+		// Keyword: ClientSocket (different in ServerLogic), to fetch message from this specifc server.
 		int message_size = socket_manager->ClientSocket()->ReceiveMessage();
 		if (message_size == 0)
 		{
@@ -39,6 +72,7 @@ int ClientLogic::Run()
 			socket_manager->ClientDisconnect();
 		}
 
+		// Like ServerLogic
 		if (message_size > 0)
 		{
 			std::string raw_message = socket_manager->ClientSocket()->ReadMessage(message_size);
@@ -83,9 +117,16 @@ int ClientLogic::Run()
 	socket_manager->Wait(5000);
 	socket_manager->ClientDisconnect();
 
+	Stop();
+
 	return 0;
 }
 
+/**
+* ClientLogic::Stop()
+*
+* Handles telling the server(s) that this client has disconnected.
+*/
 void ClientLogic::Stop()
 {
 	socket_manager->ClientSocket()->GetBuffer(0)->AddValue("packet", FYP_ON_DISCONNECT);
