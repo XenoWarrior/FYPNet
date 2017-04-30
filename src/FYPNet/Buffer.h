@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "FYPPacketType.h"
+
 #include "json.hpp"
 
 class Buffer{

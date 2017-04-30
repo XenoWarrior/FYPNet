@@ -10,7 +10,9 @@
 #include <iphlpapi.h>
 #include <stdio.h>
 
-#include "Shared.h"
+#include "FYPClientStatus.h"
+#include "FYPSocketStatus.h"
+
 #include "Socket.h"
 #include "Buffer.h"
 

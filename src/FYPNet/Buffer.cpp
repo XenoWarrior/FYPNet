@@ -1,7 +1,5 @@
 #include "Buffer.h"
 
-#include "Shared.h"
-
 /**
 * Constructor
 */

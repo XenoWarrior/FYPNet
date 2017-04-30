@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Core">
       <UniqueIdentifier>{2f80c469-75dc-428a-a2ec-f67fdbe9dae7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Data">
+      <UniqueIdentifier>{c3afb207-650f-4895-a340-0218c3074944}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -50,14 +53,20 @@
     <ClInclude Include="Buffer.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Shared.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Socket.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="PacketData.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="FYPPacketType.h">
+      <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FYPClientStatus.h">
+      <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FYPSocketStatus.h">
+      <Filter>Header Files\Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -119,9 +119,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="FYPClientStatus.h" />
+    <ClInclude Include="FYPPacketType.h" />
+    <ClInclude Include="FYPSocketStatus.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="PacketData.h" />
-    <ClInclude Include="Shared.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="SocketManager.h" />
   </ItemGroup>
