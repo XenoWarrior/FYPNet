@@ -27,8 +27,11 @@
 *.exe
 *.out
 *.app
-src/FYPNet/Debug/
-src/.vs/
 *.pdb
 *.opendb
 *.db
+
+
+src/FYPNet/Debug/
+src/FYPNet/Debug/x64/
+src/.vs/

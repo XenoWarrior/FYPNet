@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0E790097-248A-4DB0-9F14-F8FB54E6A195}</ProjectGuid>
     <RootNamespace>FYPNet</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
     <ProjectName>FYPNet</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -113,12 +113,14 @@
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PacketData.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="PacketData.h" />
     <ClInclude Include="Shared.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="SocketManager.h" />

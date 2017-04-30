@@ -2,6 +2,7 @@
 #define Buffer_H
 
 #include <string>
+#include <iostream>
 
 #include "json.hpp"
 
@@ -13,6 +14,8 @@ public:
 
 	void AddValue(std::string key, std::string value);
 	void AddValue(std::string key, int value);
+	void AddValue(std::string key, bool value);
+	void AddValue(std::string key, FYPPacketType value);
 
 	std::string GetFeed();
 

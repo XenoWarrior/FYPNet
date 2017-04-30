@@ -36,6 +36,9 @@
     <ClCompile Include="Buffer.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="PacketData.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -51,6 +54,9 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Socket.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketData.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>

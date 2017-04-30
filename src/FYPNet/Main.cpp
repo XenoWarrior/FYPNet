@@ -4,10 +4,15 @@
 
 #include "json.hpp"
 #include "SocketManager.h"
+#include "PacketData.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
 bool server_running = true;
+
+/**
+ * Handles detection of termination signals from Windows.
+*/
 BOOL WINAPI ConsoleHandler(DWORD signal)
 {
 	switch (signal)
@@ -22,6 +27,9 @@ BOOL WINAPI ConsoleHandler(DWORD signal)
 	return TRUE;
 }
 
+/**
+* Main program for testing the networking library API.
+*/
 int main()
 {
 	std::shared_ptr<SocketManager> socket_manager = std::make_shared<SocketManager>();
@@ -48,6 +56,7 @@ int main()
 		if (new_client > -1)
 		{
 			std::cout << "Accepted new client!" << std::endl;
+			socket_manager->GetSocket(new_client)->GetBuffer(0)->AddValue("packet", FYP_OUT_WELCOME_RESPONSE);
 			socket_manager->GetSocket(new_client)->GetBuffer(0)->AddValue("message", "Hello!");
 			socket_manager->GetSocket(new_client)->Dispatch(0);
 		}
@@ -63,13 +72,21 @@ int main()
 
 			if (message_size > 0)
 			{
-				std::string message = socket_manager->GetSocket(i)->ReadMessage(message_size);
-				std::cout << "Socket: " << socket_manager->GetSocket(i)->GetSocket() << " said: " << message << std::endl;
+				PacketData message = PacketData(socket_manager->GetSocket(i)->ReadMessage(message_size));
 
-				if (message == std::string("Hello\r"))
+				if (message.GetValue("packet") == "FYP_IN_CLIENT_MESSAGE")
 				{
-					socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("message", "Hello again!");
-					socket_manager->GetSocket(i)->Dispatch(0);
+					std::cout << "Socket: " << socket_manager->GetSocket(i)->GetSocket() << " said: " << message.GetValue("message") << " -- Type:" << message.GetType("message") << std::endl;
+
+					for (std::shared_ptr<Socket> s : socket_manager->GetSocketList())
+					{
+						if (s != socket_manager->GetSocket(i))
+						{
+							s->GetBuffer(0)->AddValue("packet", FYP_OUT_CLIENT_MESSAGE);
+							s->GetBuffer(0)->AddValue("message", message.GetValue("message"));
+							s->Dispatch(0);
+						}
+					}
 				}
 			}
 		}
