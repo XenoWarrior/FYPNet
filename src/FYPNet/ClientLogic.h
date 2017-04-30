@@ -16,6 +16,7 @@ public:
 	ClientLogic();
 
 	int Run();
+	void Stop();
 
 private:
 	bool engine_running = true;

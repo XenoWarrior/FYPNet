@@ -65,12 +65,6 @@
     <ClInclude Include="PacketData.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="FYPPacketType.h">
-      <Filter>Header Files\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="FYPClientStatus.h">
-      <Filter>Header Files\Data</Filter>
-    </ClInclude>
     <ClInclude Include="FYPSocketStatus.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
@@ -79,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="ClientLogic.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FYPClientStatus.h">
+      <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FYPPacketType.h">
+      <Filter>Header Files\Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

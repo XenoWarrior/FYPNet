@@ -6,7 +6,6 @@ PacketData::PacketData(std::string json)
 	{
 		try
 		{
-			std::cout << "[DEBUG] " << json << std::endl;
 			packet_data = nlohmann::json::parse(json);
 
 			packet_error_bool = false;
@@ -14,14 +13,14 @@ PacketData::PacketData(std::string json)
 		catch (std::exception e)
 		{
 			packet_error_bool = true;
-			packet_error_message = "Message must be a parsable JSON feed, returning error JSON.";
+			packet_error_message = std::string("Message must be a parsable JSON feed, returning error JSON. (Exception: " + std::string(e.what()) + ")");
 
 			std::cout << "Invalid packet sent, unable to parse JSON feed." << std::endl;
 		}
 	}
 	else
 	{
-		std::cout << "[DEBUG] Client sent an empty feed." << std::endl;
+		std::cout << "Client sent an empty feed." << std::endl;
 	}
 }
 

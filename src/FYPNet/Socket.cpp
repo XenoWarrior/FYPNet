@@ -32,8 +32,6 @@ std::string Socket::ReadMessage(int size)
 		message += message_in[i];
 	}
 
-	std::cout << "Socket::ReadMessage: " << message << std::endl;
-
 	return message;
 }
 

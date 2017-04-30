@@ -45,21 +45,30 @@ int SocketManager::Close()
 ///</summary>
 int SocketManager::Connect(std::string ip, int port)
 {
-	if ((listen_socket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+	client_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (client_socket == INVALID_SOCKET)
 	{
-		printf("create socket failed: %d", WSAGetLastError());
+		printf("create socket failed: %d\n", WSAGetLastError());
+		WSACleanup();
 		return FYP_SOCK_FAILURE;
 	}
 
-	server_socket.sin_addr.s_addr = inet_addr(ip.c_str());
-	server_socket.sin_family = AF_INET;
-	server_socket.sin_port = htons(port);
+	sockaddr_in socket_service;
+	socket_service.sin_family = AF_INET;
+	socket_service.sin_addr.s_addr = inet_addr("127.0.0.1");
+	socket_service.sin_port = htons(12500);
 
-	if (connect(listen_socket, (struct sockaddr *)&server_socket, sizeof(server_socket)) < 0)
+	if (connect(client_socket, (SOCKADDR *)& socket_service, sizeof(socket_service)) == SOCKET_ERROR)
 	{
-		printf("failed to connect");
+		printf("connect function failed with error: %ld\n", WSAGetLastError());
+		closesocket(client_socket);
+		WSACleanup();
 		return FYP_SOCK_FAILURE;
 	}
+
+	main_client_socket = std::make_shared<Socket>(client_socket);
+
+	is_client = true;
 
 	return FYP_SOCK_SUCCESS;
 }
@@ -171,4 +180,29 @@ std::vector<std::shared_ptr<Socket>> SocketManager::GetSocketList()
 std::shared_ptr<Socket> SocketManager::GetSocket(int socket_id)
 {
 	return socket_list[socket_id];
+}
+
+
+///<summary>
+/// Returns the socket, used if client
+///</summary>
+std::shared_ptr<Socket> SocketManager::ClientSocket()
+{
+	if (is_client)
+	{
+		return main_client_socket;
+	}
+	else
+	{
+		throw new std::exception("ClientSocket() cannot be called when there is no outgoing connections.");
+	}
+}
+
+///<summary>
+/// Returns the socket, used if client
+///</summary>
+void SocketManager::ClientDisconnect()
+{
+	shutdown(main_client_socket->GetSocket(), SD_SEND);
+	closesocket(main_client_socket->GetSocket());
 }

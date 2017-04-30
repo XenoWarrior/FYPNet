@@ -34,14 +34,19 @@ public:
 	std::vector<std::shared_ptr<Socket>> GetSocketList();
 	std::shared_ptr<Socket> GetSocket(int socket_id);
 
+	std::shared_ptr<Socket> ClientSocket();
+	void ClientDisconnect();
+
 private:
 	WSADATA wsa_data;
+
 	SOCKET listen_socket = INVALID_SOCKET;
+	SOCKET client_socket = INVALID_SOCKET; // for init
+	std::shared_ptr<Socket> main_client_socket; // for use
 
 	std::vector<std::shared_ptr<Socket>> socket_list;
 
-	struct sockaddr_in server_socket;
-
+	bool is_client = false;
 };
 
 #endif // !SocketManager_H

@@ -2,11 +2,10 @@
 #define FYPPacketType_H
 
 // Different response identifiers
-enum FYPPacketType { 
-	FYP_OUT_WELCOME_RESPONSE, 
-	FYP_IN_CLIENT_MESSAGE, 
-	FYP_OUT_CLIENT_MESSAGE,
-	FYP_OUT_INVALID_FEED
+enum FYPPacketType {
+	FYP_ON_CONNECT,
+	FYP_ON_MESSAGE,
+	FYP_ON_INVALID_PACKET
 };
 
 #endif

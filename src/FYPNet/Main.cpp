@@ -2,7 +2,12 @@
 #include "ClientLogic.h"
 
 // Lousy global variable, but for testing so it's all cool
-std::shared_ptr<ServerLogic> logic = std::make_shared<ServerLogic>();
+
+#if FYP_SERVER
+	std::shared_ptr<ServerLogic> logic = std::make_shared<ServerLogic>();
+#else
+	std::shared_ptr<ClientLogic> logic = std::make_shared<ClientLogic>();
+#endif
 
 /**
 * Handles sending stop signal to server.
@@ -22,7 +27,7 @@ BOOL WINAPI ConsoleHandler(DWORD signal)
 }
 
 /**
-* Entry point into the program, here I decide which logic to run for testing.
+* Entry point into the program.
 */
 int main()
 {
