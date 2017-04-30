@@ -7,6 +7,9 @@
 #include <iphlpapi.h>
 #include <stdio.h>
 
+#include <sstream>
+#include <iomanip>
+
 #include <vector>
 
 #include "Buffer.h"

@@ -1,13 +1,12 @@
 #include "ClientLogic.h"
 
-ClientLogic::ClientLogic()
+ClientLogic::ClientLogic() : LogicInterface()
 {
-
+	socket_manager = std::make_shared<SocketManager>();
 }
 
 int ClientLogic::Run()
 {
-	std::shared_ptr<SocketManager> socket_manager = std::make_shared<SocketManager>();
 
 	if (!socket_manager->Initialise())
 	{
@@ -53,30 +52,45 @@ int ClientLogic::Run()
 
 			if (!message.CheckError())
 			{
-				if (message.GetValue("packet") == std::to_string((int)FYP_ON_CONNECT))
+				if (message.GetValue("packet") == std::to_string(FYP_ON_CONNECT))
 				{
 					std::cout << "Server: " << socket_manager->ClientSocket()->GetSocket() << " said: " << message.GetValue("message") << std::endl;
 				}
-				if (message.GetValue("packet") == std::to_string((int)FYP_ON_MESSAGE))
+				else  if (message.GetValue("packet") == std::to_string(FYP_ON_MESSAGE))
 				{
 					std::cout << "Server: " << socket_manager->ClientSocket()->GetSocket() << " said: " << message.GetValue("message") << std::endl;
 				}
-				if (message.GetValue("packet") == std::to_string((int)FYP_ON_INVALID_PACKET))
+				else if (message.GetValue("packet") == std::to_string(FYP_ON_INVALID_PACKET))
 				{
 					std::cout << "Server: " << socket_manager->ClientSocket()->GetSocket() << " said: " << message.GetValue("message") << std::endl;
+				}
+				else if (message.GetValue("packet") == std::to_string(FYP_ON_DISCONNECT))
+				{
+					std::cout << "Server: " << socket_manager->ClientSocket()->GetSocket() << " said: " << message.GetValue("message") << std::endl;
+				}
+				else
+				{
+					std::cout << "Unknown packet from server." << std::endl;
 				}
 			}
 			else
 			{
-				std::cout << "Unknown server response" << std::endl;
+				std::cout << "An error occured." << std::endl;
 			}
 		}
 	}
+
+	socket_manager->Wait(5000);
+	socket_manager->ClientDisconnect();
 
 	return 0;
 }
 
 void ClientLogic::Stop()
 {
+	socket_manager->ClientSocket()->GetBuffer(0)->AddValue("packet", FYP_ON_DISCONNECT);
+	socket_manager->ClientSocket()->GetBuffer(0)->AddValue("message", "Client has closed.");
+	socket_manager->ClientSocket()->Dispatch(0);
+
 	engine_running = false;
 }

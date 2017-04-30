@@ -25,6 +25,15 @@
     <Filter Include="Header Files\Data">
       <UniqueIdentifier>{c3afb207-650f-4895-a340-0218c3074944}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\LogicHandlers">
+      <UniqueIdentifier>{d660131c-21b1-435a-b875-511e38cf515f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\LogicHandlers\Interface">
+      <UniqueIdentifier>{385ad90b-39c5-4d42-b6a9-a7551c360c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LogicHandlers">
+      <UniqueIdentifier>{34149dd2-871c-4631-8a6e-0793060836c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -43,10 +52,10 @@
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="ClientLogic.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\LogicHandlers</Filter>
     </ClCompile>
     <ClCompile Include="ServerLogic.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\LogicHandlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,17 +77,20 @@
     <ClInclude Include="FYPSocketStatus.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
-    <ClInclude Include="ServerLogic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientLogic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FYPClientStatus.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
     <ClInclude Include="FYPPacketType.h">
       <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicInterface.h">
+      <Filter>Header Files\LogicHandlers\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerLogic.h">
+      <Filter>Header Files\LogicHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientLogic.h">
+      <Filter>Header Files\LogicHandlers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

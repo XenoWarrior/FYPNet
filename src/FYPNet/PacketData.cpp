@@ -6,7 +6,8 @@ PacketData::PacketData(std::string json)
 	{
 		try
 		{
-			packet_data = nlohmann::json::parse(json);
+			std::cout << "[Parse]: " << json << std::endl;
+			packet_data = nlohmann::json::parse(json.c_str());
 
 			packet_error_bool = false;
 		}

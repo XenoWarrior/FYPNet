@@ -21,7 +21,7 @@ void Buffer::ClearBuffer()
 void Buffer::AddValue(std::string key, std::string value)
 {
 	buffer_data[key]["type"] = "string";
-	buffer_data[key]["value"] = value;
+	buffer_data[key]["value"] = std::string(value);
 }
 
 /**
@@ -30,7 +30,7 @@ void Buffer::AddValue(std::string key, std::string value)
 void Buffer::AddValue(std::string key, int value)
 {
 	buffer_data[key]["type"] = "int";
-	buffer_data[key]["value"] = value;
+	buffer_data[key]["value"] = std::to_string(value);
 }
 
 /**
@@ -39,7 +39,7 @@ void Buffer::AddValue(std::string key, int value)
 void Buffer::AddValue(std::string key, bool value)
 {
 	buffer_data[key]["type"] = "bool";
-	buffer_data[key]["value"] = value;
+	buffer_data[key]["value"] = std::to_string(value);
 }
 
 /**
@@ -48,7 +48,7 @@ void Buffer::AddValue(std::string key, bool value)
 void Buffer::AddValue(std::string key, FYPPacketType value)
 {
 	buffer_data[key]["type"] = "FYPPacketType";
-	buffer_data[key]["value"] = value;
+	buffer_data[key]["value"] = std::to_string(value);
 }
 
 /**
@@ -56,5 +56,5 @@ void Buffer::AddValue(std::string key, FYPPacketType value)
 */
 std::string Buffer::GetFeed()
 {
-	return buffer_data.dump();
+	return buffer_data.dump() + " ";
 }

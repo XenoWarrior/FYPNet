@@ -1,13 +1,13 @@
 #include "ServerLogic.h"
 
-ServerLogic::ServerLogic()
+ServerLogic::ServerLogic() : LogicInterface()
 {
 
 }
 
 int ServerLogic::Run()
 {
-	std::shared_ptr<SocketManager> socket_manager = std::make_shared<SocketManager>();
+	socket_manager = std::make_shared<SocketManager>();
 
 	if (!socket_manager->Initialise())
 	{
@@ -54,13 +54,22 @@ int ServerLogic::Run()
 
 				if (!message.CheckError())
 				{
-					if (message.GetValue("packet") == std::to_string((int)FYP_ON_CONNECT))
+					if (message.GetValue("packet") == std::to_string(FYP_ON_CONNECT))
 					{
-						std::cout << "Socket: " << socket_manager->GetSocket(i)->GetSocket() << " said: " << message.GetValue("message") << std::endl;
+						std::cout << "Client: " << socket_manager->GetSocket(i)->GetSocket() << " said: " << message.GetValue("message") << std::endl;
 
 						// For game logics, server can inform all clients that this client connected here.
+						for (std::shared_ptr<Socket> s : socket_manager->GetSocketList())
+						{
+							if (s != socket_manager->GetSocket(i))
+							{
+								s->GetBuffer(0)->AddValue("packet", FYP_ON_MESSAGE);
+								s->GetBuffer(0)->AddValue("message", std::string("Client " + std::to_string(s->GetSocket()) + " has connected!"));
+								s->Dispatch(0);
+							}
+						}
 					}
-					if (message.GetValue("packet") == std::to_string((int)FYP_ON_MESSAGE))
+					else if (message.GetValue("packet") == std::to_string(FYP_ON_MESSAGE))
 					{
 						// For message logic, server can inform all clients of messages to the server here.
 						for (std::shared_ptr<Socket> s : socket_manager->GetSocketList())
@@ -75,6 +84,19 @@ int ServerLogic::Run()
 							{
 								s->GetBuffer(0)->AddValue("packet", FYP_ON_MESSAGE);
 								s->GetBuffer(0)->AddValue("message", std::string("Your message was sent."));
+								s->Dispatch(0);
+							}
+						}
+					}
+					else if (message.GetValue("packet") == std::to_string(FYP_ON_DISCONNECT))
+					{
+						// For game logics, server can inform all clients that this client connected here.
+						for (std::shared_ptr<Socket> s : socket_manager->GetSocketList())
+						{
+							if (s != socket_manager->GetSocket(i))
+							{
+								s->GetBuffer(0)->AddValue("packet", FYP_ON_MESSAGE);
+								s->GetBuffer(0)->AddValue("message", std::string("Client " + std::to_string(s->GetSocket()) + " has disconnected!"));
 								s->Dispatch(0);
 							}
 						}
@@ -98,5 +120,12 @@ int ServerLogic::Run()
 
 void ServerLogic::Stop()
 {
+	for (std::shared_ptr<Socket> s : socket_manager->GetSocketList())
+	{
+		s->GetBuffer(0)->AddValue("packet", FYP_ON_DISCONNECT);
+		s->GetBuffer(0)->AddValue("message", "Server has closed.");
+		s->Dispatch(0);
+	}
+
 	engine_running = false;
 }
