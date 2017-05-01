@@ -33,7 +33,7 @@ std::string Socket::ReadMessage(int size)
 {
 	std::string message;
 
-	for(int i = 0; i < size-1; i++)
+	for(int i = 0; i < size; i++)
 	{
 		message += message_in[i];
 	}
