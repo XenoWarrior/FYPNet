@@ -37,3 +37,8 @@ src/FYPNet/Debug/x64/
 src/.vs/
 src/FYPNet/x64/
 src/x64/
+src/Prototypes/Chat/packages/Newtonsoft.Json.10.0.2/tools/install.ps1
+src/Prototypes/Chat/packages/
+src/Prototypes/Chat/Chat/obj/
+src/Prototypes/Chat/Chat/bin/
+src/Prototypes/Chat/.vs/

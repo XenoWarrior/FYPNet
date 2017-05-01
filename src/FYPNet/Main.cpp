@@ -1,6 +1,13 @@
+// Interface for logics
+#include "LogicInterface.h"
+
+// Debug logics
 #include "ServerLogic.h"
 #include "ClientLogic.h"
-#include "LogicInterface.h"
+
+// Prototype logics
+#include "GameServer.h"
+#include "ChatServer.h"
 
 std::shared_ptr<LogicInterface> logic;
 
@@ -31,19 +38,27 @@ int main()
 	int type = 0;
 
 	// Take input values from console
-	std::cout << "Select Logic:\n>> 0: Server\n>> 1: Client\n(Enter Option): ";
+	std::cout << "Select Logic:\n>> 0: Server\n>> 1: Client\n>> 2: GameServer Prototype\n3: ChatServer Prototype\n(Enter Option): ";
 	std::cin >> type;
 
 	// Identify type, give error if type does not exist
 	switch (type)
 	{
 		case 0:
-			std::cout << "Using ServerLogic" << std::endl;
+			std::cout << "-----------Starting ServerLogic-----------" << std::endl;
 			logic = std::make_shared<ServerLogic>();
 			break;
 		case 1:
-			std::cout << "Using ClientLogic" << std::endl;
+			std::cout << "-----------Starting ClientLogic-----------" << std::endl;
 			logic = std::make_shared<ClientLogic>();
+			break;
+		case 2:
+			std::cout << "-----------Starting GameServer-----------" << std::endl;
+			logic = std::make_shared<GameServer>();
+			break;
+		case 3:
+			std::cout << "-----------Starting ChatServer-----------" << std::endl;
+			logic = std::make_shared<ChatServer>();
 			break;
 		default:
 			std::cout << "Unknown logic case " << type << std::endl;
@@ -63,7 +78,6 @@ int main()
 	{
 		logic->Run();
 	}
-
 
 	// For exit, gives some time to see output
 	Sleep(5000);

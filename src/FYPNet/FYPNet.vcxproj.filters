@@ -34,6 +34,12 @@
     <Filter Include="Source Files\LogicHandlers">
       <UniqueIdentifier>{34149dd2-871c-4631-8a6e-0793060836c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Prototypes">
+      <UniqueIdentifier>{1a473cab-f5e7-4b3a-a749-7db38f0ff8ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Prototypes">
+      <UniqueIdentifier>{3707e8d7-1c4f-494c-8b63-68b41985dc45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -56,6 +62,12 @@
     </ClCompile>
     <ClCompile Include="ServerLogic.cpp">
       <Filter>Source Files\LogicHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServer.cpp">
+      <Filter>Source Files\Prototypes</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatServer.cpp">
+      <Filter>Source Files\Prototypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="ClientLogic.h">
       <Filter>Header Files\LogicHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameServer.h">
+      <Filter>Header Files\Prototypes</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatServer.h">
+      <Filter>Header Files\Prototypes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
