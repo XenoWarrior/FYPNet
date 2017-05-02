@@ -27,12 +27,13 @@ namespace Chat
         // GameServer Prototype
         FYPGP_ON_LOGIN,         // 4
         FYPGP_ON_CREATECHAR,    // 5
-        FYPGB_ON_GETCHARS,      // 6
+        FYPGP_ON_GETCHARS,      // 6
+        FYPGP_ON_GETZONES,      // 7
 
         // ChatServer Prototype
-        FYPCP_ON_ACCEPT,        // 7
-        FYPCP_ON_MESSAGE,       // 8
-        FYPCP_ON_NEWUSER        // 9
+        FYPCP_ON_ACCEPT,        // 8
+        FYPCP_ON_MESSAGE,       // 9
+        FYPCP_ON_NEWUSER        // 10
     }
 
     public partial class MainForm : Form

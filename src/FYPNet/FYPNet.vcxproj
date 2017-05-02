@@ -38,7 +38,7 @@
     <ProjectGuid>{0E790097-248A-4DB0-9F14-F8FB54E6A195}</ProjectGuid>
     <RootNamespace>FYPNet</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
-    <ProjectName>FYPNetwork</ProjectName>
+    <ProjectName>FYPNet</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
