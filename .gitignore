@@ -42,3 +42,5 @@ src/Prototypes/Chat/packages/
 src/Prototypes/Chat/Chat/obj/
 src/Prototypes/Chat/Chat/bin/
 src/Prototypes/Chat/.vs/
+src/enc_temp_folder/
+src/Prototypes/PlayClient.gmx/
