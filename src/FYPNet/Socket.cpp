@@ -23,7 +23,7 @@ Socket::Socket(SOCKET s)
 */
 int Socket::ReceiveMessage()
 {
-	return recv(socket, message_in, 8195, 0);
+	return recv(socket, message_in, 8195, MSG_PEEK);
 }
 
 /**
@@ -32,6 +32,8 @@ int Socket::ReceiveMessage()
 std::string Socket::ReadMessage(int size)
 {
 	std::string message;
+
+	recv(socket, message_in, size, 0);
 
 	for(int i = 0; i < size; i++)
 	{
