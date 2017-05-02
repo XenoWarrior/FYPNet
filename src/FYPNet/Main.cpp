@@ -38,7 +38,7 @@ int main()
 	int type = 0;
 
 	// Take input values from console
-	std::cout << "Select Logic:\n>> 0: Server\n>> 1: Client\n>> 2: GameServer Prototype\n3: ChatServer Prototype\n(Enter Option): ";
+	std::cout << "Select Logic:\n>> 0: Server\n>> 1: Client\n>> 2: GameServer Prototype\n>> 3: ChatServer Prototype\n(Enter Option): ";
 	std::cin >> type;
 
 	// Identify type, give error if type does not exist

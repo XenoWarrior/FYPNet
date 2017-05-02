@@ -96,7 +96,13 @@ int SocketManager::Disconnect(int socket_id)
 		return FYP_SOCK_FAILURE;
 	}
 
-	closesocket(socket_list[socket_id]->GetSocket());
+	result = closesocket(socket_list[socket_id]->GetSocket());
+	if (result == SOCKET_ERROR)
+	{
+		printf("close failed: %d\n", WSAGetLastError());
+		return FYP_SOCK_FAILURE;
+	}
+
 	socket_list.erase(socket_list.begin() + socket_id);
 
 	return FYP_SOCK_SUCCESS;
@@ -213,4 +219,15 @@ void SocketManager::ClientDisconnect()
 {
 	shutdown(main_client_socket->GetSocket(), SD_SEND);
 	closesocket(main_client_socket->GetSocket());
+}
+
+/**
+* Disconnects all clients from the server
+*/
+void SocketManager::DisconnectAll()
+{
+	for (int i = 0; i < socket_list.size(); i++)
+	{
+		Disconnect(i);
+	}
 }

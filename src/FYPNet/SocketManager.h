@@ -44,6 +44,7 @@ public:
 
 	std::shared_ptr<Socket> ClientSocket();
 	void ClientDisconnect();
+	void DisconnectAll();
 
 private:
 	WSADATA wsa_data;

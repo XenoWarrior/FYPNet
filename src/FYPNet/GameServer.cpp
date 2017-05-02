@@ -23,13 +23,13 @@ int GameServer::Run()
 
 	if (!socket_manager->Initialise())
 	{
-		std::cout << "Could not initialise socket manager" << std::endl;
+		std::cout << "[GameServer] Could not initialise socket manager" << std::endl;
 		engine_running = false;
 	}
 
 	if (!socket_manager->Listen(12500, 1000, true))
 	{
-		std::cout << "Could not initialise listen socket" << std::endl;
+		std::cout << "[GameServer] Could not initialise listen socket" << std::endl;
 		engine_running = false;
 	}
 
@@ -39,7 +39,7 @@ int GameServer::Run()
 
 		if (new_client > -1)
 		{
-			std::cout << "Accepted new client!" << std::endl;
+			std::cout << "[GameServer] Accepted new client!" << std::endl;
 		}
 
 		for (int i = 0; i < socket_manager->GetSocketList().size(); i++)
@@ -48,7 +48,7 @@ int GameServer::Run()
 
 			if (message_size == 0)
 			{
-				std::cout << "Socket: " << socket_manager->GetSocket(i)->GetSocket() << " disconnected." << std::endl;
+				std::cout << "[GameServer] Socket: " << socket_manager->GetSocket(i)->GetSocket() << " disconnected." << std::endl;
 				socket_manager->Disconnect(i);
 			}
 
@@ -62,34 +62,42 @@ int GameServer::Run()
 					// LOGIN / REGISTER
 					// For this prototype, we won't bother fetching any data from a database.
 					// Just return a static account.
-					if (message.GetValue("packet") == std::to_string(FYP_ON_CONNECT))
+					try
 					{
-						if (message.GetValue("connect_type") == "Register")
+						if (message.GetValue("packet") == std::to_string(FYP_ON_CONNECT))
 						{
-							std::cout << "Request registration, but this is just a prototype so we can just force the client to connect with an account." << std::endl;
+							// Send force login (*FYPGP = GameServer Prototype)
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_LOGIN);
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("username", message.GetValue("username"));
+							socket_manager->GetSocket(i)->Dispatch(0);
+
+							std::cout << "[GameServer] Authenticated: " << message.GetValue("username") << std::endl;
+
+							// Could have a PlayerManager here which keeps track of logged in users, caches their account to minimise database connections.
+							// {...}
 						}
-						
-						// Send force login (*FYPGP = GameServer Prototype)
-						socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_LOGIN);
-						socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("username", "FYProto");
-						socket_manager->GetSocket(i)->Dispatch(0);
 
-						// Could have a PlayerManager here which keeps track of logged in users, caches their account to minimise database connections.
-						// {...}
+						// CHARACER SELECT / CREATE
+						// Again, another static prototype method.
+						// Send some static character packages.
+						if (message.GetValue("packet") == std::to_string(FYPGP_ON_GETCHARS))
+						{
+							// Could look at the PlayerManager here for the user account data for this specific socket.
+							// {...}
+
+							// Send back some character data.
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_GETCHARS);
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("character", "male;8;0;0;1;0;1;0;1;1;10;0;-1;4;7;3;0;0;0;1;0;0;0;1;7;5;0;1;5");
+							socket_manager->GetSocket(i)->Dispatch(0);
+						}
 					}
-
-					// CHARACER SELECT / CREATE
-					// Again, another static prototype method.
-					// Send some static character packages.
-					if (message.GetValue("packet") == std::to_string(FYPGB_ON_GETCHARS))
+					catch (std::exception e)
 					{
-						// Could look at the PlayerManager here for the user account data for this specific socket.
-						// {...}
+						// Error in client request
+						std::cout << "[GameServer] Exception Caught: " << e.what() << std::endl;
 
-						// Send back some character data.
-						socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGB_ON_GETCHARS);
-						socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("character", "male;8;0;0;1;0;1;0;1;1;10;0;-1;4;7;3;0;0;0;1;0;0;0;1;7;5;0;1;5");
-						socket_manager->GetSocket(i)->Dispatch(0);
+						// Disconenct client to send it back to menu screen
+						socket_manager->Disconnect(i);
 					}
 				}
 				else
@@ -98,15 +106,17 @@ int GameServer::Run()
 					socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYP_ON_INVALID_PACKET);
 					socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("message", message.GetErrorMessage());
 					socket_manager->GetSocket(i)->Dispatch(0);
+
+					// Disconnect client to send it back to menu screen
+					socket_manager->Disconnect(i);
 				}
 			}
 		}
 	}
 
 	socket_manager->Wait(5000);
+	socket_manager->DisconnectAll();
 	socket_manager->Close();
-	
-	Stop();
 	
 	return 0;
 }

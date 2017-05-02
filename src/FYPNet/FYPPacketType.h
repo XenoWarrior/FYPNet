@@ -20,7 +20,7 @@ enum FYPPacketType {
 	// GameServer Prototype
 	FYPGP_ON_LOGIN,			// 4
 	FYPGP_ON_CREATECHAR,	// 5
-	FYPGB_ON_GETCHARS,		// 6
+	FYPGP_ON_GETCHARS,		// 6
 
 	// ChatServer Prototype
 	FYPCP_ON_ACCEPT,        // 7
