@@ -48,6 +48,8 @@ PacketData::PacketData(std::string json)
 
 					while (json[string_end] != '}')
 					{
+						string_end = json.length() - 1;
+
 						if (json.length() < 1)
 						{
 							break;
