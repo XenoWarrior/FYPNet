@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -233,15 +234,19 @@ namespace Chat
                         }
                     }
 
-                    if (fullReply != "")
+                    // Risky cast, but if data is not in the correct structure, then an error will be thrown
+                    JObject packet = JsonConvert.DeserializeObject<JObject>(fullReply);
+                    JObject message = JsonConvert.DeserializeObject<JObject>(packet.GetValue("message").ToString());
+                    
+                    if (message.GetValue("value").ToString() != "")
                     {
-                        this.Invoke((MethodInvoker)(() => lbMessages.Items.Add(fullReply)));
+                        this.Invoke((MethodInvoker)(() => lbMessages.Items.Add(message.GetValue("value").ToString())));
                         this.Invoke((MethodInvoker)(() => lbMessages.TopIndex = Math.Max(lbMessages.Items.Count - lbMessages.ClientSize.Height / lbMessages.ItemHeight + 1, 0)));
                     }
                 }
-                catch(Exception e)
+                catch(Exception ex)
                 {
-
+                    //MessageBox.Show("Exception: " + ex);
                 }
             }
         }
