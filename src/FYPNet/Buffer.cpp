@@ -20,7 +20,7 @@ Buffer::Buffer()
 */
 void Buffer::ClearBuffer()
 {
-
+	buffer_data.clear();
 }
 
 /**
