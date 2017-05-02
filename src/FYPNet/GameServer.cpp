@@ -67,6 +67,7 @@ int GameServer::Run()
 						if (message.GetValue("packet") == std::to_string(FYP_ON_CONNECT))
 						{
 							// Send force login (*FYPGP = GameServer Prototype)
+							socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_LOGIN);
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("username", message.GetValue("username"));
 							socket_manager->GetSocket(i)->Dispatch(0);
@@ -80,16 +81,30 @@ int GameServer::Run()
 						// CHARACER SELECT / CREATE
 						// Again, another static prototype method.
 						// Send some static character packages.
-						if (message.GetValue("packet") == std::to_string(FYPGP_ON_GETCHARS))
+						else if (message.GetValue("packet") == std::to_string(FYPGP_ON_GETCHARS))
 						{
 							// Could look at the PlayerManager here for the user account data for this specific socket.
 							// {...}
 
 							// Send back some character data.
+							socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_GETCHARS);
-							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("character", "male;8;0;0;1;0;1;0;1;1;10;0;-1;4;7;3;0;0;0;1;0;0;0;1;7;5;0;1;5");
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("0", std::string("XenoWarrior:0:male;8;0;0;1;0;1;0;1;1;7;0;-1;4;7;3;0;0;0;1;0;0;0;1;7;5;0;1;5:13:37:0"));
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("1", std::string("Zenro45:0:male;10;4;2;3;2;3;0;7;3;10;2;3;1;0;0;0;0;0;4;2;0;0;0;0;0;0;3;1:2:334:0"));
+							//socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("2", std::string("TestPleb:0:female;1;0;0;1;0;1;0;1;1;1;0;-1;1;0;0;0;0;0;1;0;0;0;0;0;0;0;1;0:24:4450:0"));
 							socket_manager->GetSocket(i)->Dispatch(0);
 						}
+
+						// If the packet is not known in the list above
+						else
+						{
+							socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYP_ON_INVALID_PACKET);
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("message", std::string("Unknown packet ID " + message.GetValue("packet")));
+							socket_manager->GetSocket(i)->Dispatch(0);
+						}
+
+
 					}
 					catch (std::exception e)
 					{
@@ -103,12 +118,10 @@ int GameServer::Run()
 				else
 				{
 					// Some invalid packet came through, just send a warning to the client. (mostly for debug and to turn scriptkiddies away)
+					socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
 					socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYP_ON_INVALID_PACKET);
 					socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("message", message.GetErrorMessage());
 					socket_manager->GetSocket(i)->Dispatch(0);
-
-					// Disconnect client to send it back to menu screen
-					socket_manager->Disconnect(i);
 				}
 			}
 		}
