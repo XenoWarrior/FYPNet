@@ -7,6 +7,7 @@
 
 // Prototype logics
 #include "GameServer.h"
+#include "ZoneServer.h"
 #include "ChatServer.h"
 
 std::shared_ptr<LogicInterface> logic;
@@ -38,7 +39,7 @@ int main()
 	int type = 0;
 
 	// Take input values from console
-	std::cout << "Select Logic:\n>> 0: Server\n>> 1: Client\n>> 2: GameServer Prototype\n>> 3: ChatServer Prototype\n(Enter Option): ";
+	std::cout << "Select Logic:\n>> 0: Server\n>> 1: Client\n>> 2: GameServer Prototype\n>> 3: ZoneServer Prototype\n>> 4: ChatServer Prototype\n(Enter Option): ";
 	std::cin >> type;
 
 	// Identify type, give error if type does not exist
@@ -57,6 +58,10 @@ int main()
 			logic = std::make_shared<GameServer>();
 			break;
 		case 3:
+			std::cout << "-----------Starting ZoneServer-----------" << std::endl;
+			logic = std::make_shared<ZoneServer>();
+			break;
+		case 4:
 			std::cout << "-----------Starting ChatServer-----------" << std::endl;
 			logic = std::make_shared<ChatServer>();
 			break;

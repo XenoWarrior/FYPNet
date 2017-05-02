@@ -40,6 +40,12 @@
     <Filter Include="Header Files\Prototypes">
       <UniqueIdentifier>{3707e8d7-1c4f-494c-8b63-68b41985dc45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Prototypes\ZoneServer">
+      <UniqueIdentifier>{a5416a3c-c09c-4ed8-8a3a-b561b88559a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Prototypes\ZoneServer">
+      <UniqueIdentifier>{a3176279-69d0-4d96-9d19-e19ea7b325d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -68,6 +74,15 @@
     </ClCompile>
     <ClCompile Include="ChatServer.cpp">
       <Filter>Source Files\Prototypes</Filter>
+    </ClCompile>
+    <ClCompile Include="ZoneServer.cpp">
+      <Filter>Source Files\Prototypes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerManager.cpp">
+      <Filter>Source Files\Prototypes\ZoneServer</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Prototypes\ZoneServer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="ChatServer.h">
       <Filter>Header Files\Prototypes</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoneServer.h">
+      <Filter>Header Files\Prototypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerManager.h">
+      <Filter>Header Files\Prototypes\ZoneServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Prototypes\ZoneServer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

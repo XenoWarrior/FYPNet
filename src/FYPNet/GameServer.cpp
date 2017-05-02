@@ -95,6 +95,34 @@ int GameServer::Run()
 							socket_manager->GetSocket(i)->Dispatch(0);
 						}
 
+						// GET ZONE LIST
+						// This method will send a list of available zone servers (which provide the in-game logic)
+						// Due to prototyping, this will only return a static server, make sure it is running!
+						else if (message.GetValue("packet") == std::to_string(FYPGP_ON_GETZONES))
+						{
+							// Send a static zone server config to client
+							socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_GETZONES);
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("0", std::string("ProtoZone;0;7100;0"));
+							socket_manager->GetSocket(i)->Dispatch(0);
+
+							std::cout << "[GameServer] Sent zone list." << std::endl;
+
+						}
+
+						// JOIN ZONE
+						// Client will ask the server if it can join the zone, server checks conditions (like valid password before allowing)
+						// A further check should also be done on the zone server and disconnect anyone not authenticated to join.
+						else if (message.GetValue("packet") == std::to_string(FYPGP_ON_JOINZONE))
+						{
+							// Accept the client join request
+							socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_ZONEACCEPT);
+							socket_manager->GetSocket(i)->Dispatch(0);
+
+							std::cout << "[GameServer] Sent zone join accept." << std::endl;
+						}
+
 						// If the packet is not known in the list above
 						else
 						{
@@ -102,9 +130,9 @@ int GameServer::Run()
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYP_ON_INVALID_PACKET);
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("message", std::string("Unknown packet ID " + message.GetValue("packet")));
 							socket_manager->GetSocket(i)->Dispatch(0);
+							
+							std::cout << "[GameServer] Sent invalid packet message." << std::endl;
 						}
-
-
 					}
 					catch (std::exception e)
 					{
@@ -122,6 +150,8 @@ int GameServer::Run()
 					socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYP_ON_INVALID_PACKET);
 					socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("message", message.GetErrorMessage());
 					socket_manager->GetSocket(i)->Dispatch(0);
+
+					std::cout << "[GameServer] Sent invalid packet message." << std::endl;
 				}
 			}
 		}

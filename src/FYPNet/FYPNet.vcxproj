@@ -156,9 +156,12 @@
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PacketData.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="ServerLogic.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketManager.cpp" />
+    <ClCompile Include="ZoneServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
@@ -171,9 +174,12 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="LogicInterface.h" />
     <ClInclude Include="PacketData.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="ServerLogic.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="SocketManager.h" />
+    <ClInclude Include="ZoneServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

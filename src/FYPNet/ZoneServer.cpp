@@ -9,6 +9,7 @@ int ZoneServer::Run()
 {
 
 	socket_manager = std::make_shared<SocketManager>();
+	player_manager = std::make_shared<PlayerManager>();
 
 	if (!socket_manager->Initialise())
 	{
@@ -60,11 +61,20 @@ int ZoneServer::Run()
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("username", message.GetValue("username"));
 							socket_manager->GetSocket(i)->Dispatch(0);
 
+							// Add the player
+							player_manager->AddPlayer(message.GetValue("username"), socket_manager->GetSocket(i)->GetSocket());
+
+							// Debug
+							std::cout << "[ZoneServer] Name -> Socket: " << player_manager->GetPlayer(message.GetValue("username")) << std::endl;
+							std::cout << "[ZoneServer] Socket -> Name: " << player_manager->GetPlayer(socket_manager->GetSocket(i)->GetSocket()) << std::endl;
+							
+							// Debug
 							std::cout << "[ZoneServer] Authenticated: " << message.GetValue("username") << std::endl;
 						}
 						else if (message.GetValue("packet") == std::to_string(FYPGP_ON_UPDATEPOS))
 						{
-							
+							std::cout << "[ZoneServer] Updated position for: " << message.GetValue("character") << std::endl;
+
 						}
 						else
 						{

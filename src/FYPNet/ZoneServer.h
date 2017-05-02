@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "SocketManager.h"
+#include "PlayerManager.h"
 #include "PacketData.h"
 
 #include "LogicInterface.h"
@@ -19,6 +20,7 @@ private:
 	bool engine_running = true;
 
 	std::shared_ptr<SocketManager> socket_manager;
+	std::shared_ptr<PlayerManager> player_manager;
 };
 
 #endif

@@ -16,17 +16,20 @@ enum FYPPacketType {
     FYP_ON_MESSAGE,         // 1
     FYP_ON_INVALID_PACKET,  // 2
     FYP_ON_DISCONNECT,      // 3
-    
+
+	// ChatServer Prototype
+	FYPCP_ON_ACCEPT,        // 4
+	FYPCP_ON_MESSAGE,       // 5
+	FYPCP_ON_NEWUSER,       // 6
+
     // GameServer Prototype
-    FYPGP_ON_LOGIN,         // 4
-    FYPGP_ON_CREATECHAR,    // 5
-    FYPGP_ON_GETCHARS,      // 6
-    FYPGP_ON_GETZONES,      // 7
-    
-    // ChatServer Prototype
-    FYPCP_ON_ACCEPT,        // 8
-    FYPCP_ON_MESSAGE,       // 9
-    FYPCP_ON_NEWUSER        // 10
+    FYPGP_ON_LOGIN,         // 7
+    FYPGP_ON_CREATECHAR,    // 8
+    FYPGP_ON_GETCHARS,      // 9
+	FYPGP_ON_GETZONES,      // 10
+	FYPGP_ON_UPDATEPOS,     // 11
+	FYPGP_ON_JOINZONE,		// 12
+	FYPGP_ON_ZONEACCEPT     // 13
 };
 
 #endif
