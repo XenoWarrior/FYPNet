@@ -22,6 +22,24 @@ std::shared_ptr<Player> PlayerManager::GetPlayer(SOCKET socket)
 	return socket_to_player_list[socket];
 }
 
+void PlayerManager::RemovePlayer(std::string player_name)
+{
+	SOCKET s = name_to_player_list[player_name]->player_socket->GetSocket();
+
+	name_to_player_list.erase(player_name);
+
+	socket_to_player_list.erase(s);
+}
+
+void PlayerManager::RemovePlayer(SOCKET socket)
+{
+	std::string n = socket_to_player_list[socket]->player_name;
+
+	socket_to_player_list.erase(socket);
+
+	name_to_player_list.erase(n);
+}
+
 std::map<std::string, std::shared_ptr<Player>> PlayerManager::GetPlayerList()
 {
 	return name_to_player_list;
