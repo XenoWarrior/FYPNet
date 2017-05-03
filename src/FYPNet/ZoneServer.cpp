@@ -65,16 +65,56 @@ int ZoneServer::Run()
 							player_manager->AddPlayer(message.GetValue("username"), socket_manager->GetSocket(i)->GetSocket());
 
 							// Debug
-							std::cout << "[ZoneServer] Name -> Socket: " << player_manager->GetPlayer(message.GetValue("username")) << std::endl;
-							std::cout << "[ZoneServer] Socket -> Name: " << player_manager->GetPlayer(socket_manager->GetSocket(i)->GetSocket()) << std::endl;
+							std::cout << "[ZoneServer] Name -> Socket: Player(" << player_manager->GetPlayer(message.GetValue("username"))->player_name << ")" << std::endl;
+							std::cout << "[ZoneServer] Socket -> Name: Player(" << player_manager->GetPlayer(socket_manager->GetSocket(i)->GetSocket())->player_name << ")" << std::endl;
 							
 							// Debug
 							std::cout << "[ZoneServer] Authenticated: " << message.GetValue("username") << std::endl;
+
+							// Tell already connected players who connected
+							for (auto s : socket_manager->GetSocketList())
+							{
+								// Make sure we're not sending the new player back to the new player
+								// They would see duplicate objects of themselves.
+								// One which they control and one which does not get updated.
+								if (s != socket_manager->GetSocket(i))
+								{
+									std::cout << "[GameServer] Telling " << player_manager->GetPlayer(s->GetSocket())->player_name << " that " << message.GetValue("username") << " has joined." << std::endl;
+
+									s->GetBuffer(0)->ClearBuffer();
+									s->GetBuffer(0)->AddValue("packet", FYPGP_ON_NEWPLAYER);
+									s->GetBuffer(0)->AddValue("name", message.GetValue("username"));
+									s->Dispatch(0);
+
+									std::cout << "[GameServer] Telling " << message.GetValue("username") << " that " << player_manager->GetPlayer(s->GetSocket())->player_name << " exists." << std::endl;
+
+									socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
+									socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_NEWPLAYER);
+									socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("name", player_manager->GetPlayer(s->GetSocket())->player_name);
+									socket_manager->GetSocket(i)->Dispatch(0);
+								}
+							}
 						}
 						else if (message.GetValue("packet") == std::to_string(FYPGP_ON_UPDATEPOS))
 						{
 							std::cout << "[ZoneServer] Updated position for: " << message.GetValue("character") << std::endl;
 
+							player_manager->GetPlayer(message.GetValue("character"))->player_pos["x"] = stoi(message.GetValue("x"));
+							player_manager->GetPlayer(message.GetValue("character"))->player_pos["y"] = stoi(message.GetValue("y"));
+							player_manager->GetPlayer(message.GetValue("character"))->player_pos["angle"] = stoi(message.GetValue("angle"));
+
+							for (auto s : socket_manager->GetSocketList())
+							{
+								if (s != socket_manager->GetSocket(i))
+								{
+									s->GetBuffer(0)->ClearBuffer();
+									s->GetBuffer(0)->AddValue("character", message.GetValue("character"));
+									s->GetBuffer(0)->AddValue("x", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["x"]));
+									s->GetBuffer(0)->AddValue("y", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["y"]));
+									s->GetBuffer(0)->AddValue("angle", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["angle"]));
+									s->Dispatch(0);
+								}
+							}
 						}
 						else
 						{

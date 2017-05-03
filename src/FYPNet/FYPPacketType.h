@@ -29,7 +29,9 @@ enum FYPPacketType {
 	FYPGP_ON_GETZONES,      // 10
 	FYPGP_ON_UPDATEPOS,     // 11
 	FYPGP_ON_JOINZONE,		// 12
-	FYPGP_ON_ZONEACCEPT     // 13
+	FYPGP_ON_ZONEACCEPT,    // 13
+	FYPGP_ON_NEWPLAYER		// 14
+
 };
 
 #endif

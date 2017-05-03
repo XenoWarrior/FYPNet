@@ -14,7 +14,7 @@ PacketData::PacketData(std::string json)
 	{
 		try
 		{
-			std::cout << "[Parse]: " << json << std::endl;
+			//std::cout << "[Parse]: " << json << std::endl;
 
 			// For GameServer logic
 			// Due to the bugs with the networking library used in GameMaker: Studio
@@ -24,7 +24,7 @@ PacketData::PacketData(std::string json)
 
 			if(json[0] != '{')
 			{
-				std::cout << "[Parse] Detected issue with string start, attempting repair." << std::endl;
+				//std::cout << "[Parse] Detected issue with string start, attempting repair." << std::endl;
 
 				while (json[0] != '{')
 				{
@@ -33,7 +33,7 @@ PacketData::PacketData(std::string json)
 						break;
 					}
 
-					std::cout << "[Parse] >> Removing unknown start character: " << json[0] << std::endl;
+					//std::cout << "[Parse] >> Removing unknown start character: " << json[0] << std::endl;
 					json.erase(json.begin());
 				}
 			}
@@ -44,7 +44,7 @@ PacketData::PacketData(std::string json)
 				int string_end = json.length() - 1;
 				if (json[string_end] != '}')
 				{
-					std::cout << "[Parse] Detected issue with string end, attempting repair." << std::endl;
+					//std::cout << "[Parse] Detected issue with string end, attempting repair." << std::endl;
 
 					while (json[string_end] != '}')
 					{
@@ -55,17 +55,17 @@ PacketData::PacketData(std::string json)
 							break;
 						}
 
-						std::cout << "[Parse] >> Removing unknown end character: " << json[string_end] << std::endl;
+						//std::cout << "[Parse] >> Removing unknown end character: " << json[string_end] << std::endl;
 						json.erase(json.begin()+string_end);
 					}
 				}
 			}
 			else
 			{
-				std::cout << "[Parse] Unable to parse as string has become empty (was invalid from the start)" << std::endl;
+				//std::cout << "[Parse] Unable to parse as string has become empty (was invalid from the start)" << std::endl;
 			}
 
-			std::cout << "[Parse]: " << json << std::endl;
+			//std::cout << "[Parse]: " << json << std::endl;
 
 			packet_data = nlohmann::json::parse(json.c_str());
 
@@ -76,12 +76,12 @@ PacketData::PacketData(std::string json)
 			packet_error_bool = true;
 			packet_error_message = std::string("Message must be a parsable JSON feed, returning error JSON. (Exception: " + std::string(e.what()) + ")");
 
-			std::cout << "[Parse] Invalid packet sent, unable to parse JSON feed." << std::endl;
+			//std::cout << "[Parse] Invalid packet sent, unable to parse JSON feed." << std::endl;
 		}
 	}
 	else
 	{
-		std::cout << "[Parse] Client sent an empty feed." << std::endl;
+		//std::cout << "[Parse] Client sent an empty feed." << std::endl;
 	}
 }
 
