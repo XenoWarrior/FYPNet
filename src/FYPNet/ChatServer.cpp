@@ -34,7 +34,6 @@ int ChatServer::Run()
 		socket_manager->Wait(10);
 
 		int new_client = socket_manager->Accept(true);
-
 		if (new_client > -1)
 		{
 			std::cout << "Accepted new client!" << std::endl;
@@ -44,9 +43,9 @@ int ChatServer::Run()
 		{
 			int message_size = socket_manager->GetSocket(i)->ReceiveMessage();
 
-			if (message_size == 0)
+			if (message_size == 0 or socket_manager->SocketConnected(i) == FYP_SOCK_FAILURE)
 			{
-				std::cout << "Socket: " << socket_manager->GetSocket(i)->GetSocket() << " disconnected." << std::endl;
+				std::cout << "[ChatServer] Socket: " << socket_manager->GetSocket(i)->GetSocket() << " disconnected." << std::endl;
 				socket_manager->Disconnect(i);
 			}
 
@@ -120,6 +119,7 @@ int ChatServer::Run()
 	}
 
 	socket_manager->Wait(5000);
+	socket_manager->DisconnectAll();
 	socket_manager->Close();
 
 	Stop();

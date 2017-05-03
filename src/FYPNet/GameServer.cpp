@@ -36,7 +36,6 @@ int GameServer::Run()
 	while (engine_running)
 	{
 		int new_client = socket_manager->Accept(true);
-
 		if (new_client > -1)
 		{
 			std::cout << "[GameServer] Accepted new client!" << std::endl;
@@ -46,7 +45,7 @@ int GameServer::Run()
 		{
 			int message_size = socket_manager->GetSocket(i)->ReceiveMessage();
 
-			if (message_size == 0)
+			if (message_size == 0 or socket_manager->SocketConnected(i) == FYP_SOCK_FAILURE)
 			{
 				std::cout << "[GameServer] Socket: " << socket_manager->GetSocket(i)->GetSocket() << " disconnected." << std::endl;
 				socket_manager->Disconnect(i);

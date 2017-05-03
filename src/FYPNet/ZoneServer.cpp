@@ -28,7 +28,6 @@ int ZoneServer::Run()
 	while (engine_running)
 	{
 		int new_client = socket_manager->Accept(true);
-
 		if (new_client > -1)
 		{
 			std::cout << "[ZoneServer] Accepted new client!" << std::endl;
@@ -38,9 +37,10 @@ int ZoneServer::Run()
 		{
 			int message_size = socket_manager->GetSocket(i)->ReceiveMessage();
 
-			if (message_size == 0)
+			if (message_size == 0 or socket_manager->SocketConnected(i) == FYP_SOCK_FAILURE)
 			{
 				std::cout << "[ZoneServer] Socket: " << socket_manager->GetSocket(i)->GetSocket() << " disconnected." << std::endl;
+				player_manager->RemovePlayer(socket_manager->GetSocket(i)->GetSocket());
 				socket_manager->Disconnect(i);
 			}
 
@@ -108,6 +108,7 @@ int ZoneServer::Run()
 								if (s != socket_manager->GetSocket(i))
 								{
 									s->GetBuffer(0)->ClearBuffer();
+									s->GetBuffer(0)->AddValue("packet", std::to_string(FYPGP_ON_UPDATEPOS));
 									s->GetBuffer(0)->AddValue("character", message.GetValue("character"));
 									s->GetBuffer(0)->AddValue("x", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["x"]));
 									s->GetBuffer(0)->AddValue("y", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["y"]));

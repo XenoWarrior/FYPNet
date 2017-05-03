@@ -40,11 +40,13 @@ public:
 	void Wait(int time_ms);
 
 	std::vector<std::shared_ptr<Socket>> GetSocketList();
-	std::shared_ptr<Socket> GetSocket(int socket_id);
+	std::shared_ptr<Socket> GetSocket(int index);
 
 	std::shared_ptr<Socket> ClientSocket();
 	void ClientDisconnect();
 	void DisconnectAll();
+
+	FYPSocketStatus SocketConnected(int socket);
 
 private:
 	WSADATA wsa_data;

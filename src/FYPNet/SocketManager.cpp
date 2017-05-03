@@ -4,6 +4,9 @@
 * Author: Ashley Scott
 * Date: 2016 - 2017
 *
+* TODO:
+*	- Allow multiple outgoing client connections
+*		- Should be easy to implement, similar to how clients are accepted and then log them into a list of outgoing sockets
 */
 
 #include "SocketManager.h"
@@ -191,9 +194,14 @@ std::vector<std::shared_ptr<Socket>> SocketManager::GetSocketList()
 /**
 * Gets a socket from a specified ID
 */
-std::shared_ptr<Socket> SocketManager::GetSocket(int socket_id)
+std::shared_ptr<Socket> SocketManager::GetSocket(int index)
 {
-	return socket_list[socket_id];
+	if (socket_list.size() < index)
+	{
+		throw std::exception("Socket does not exist. (requested index is larger than the socket list)");
+	}
+
+	return socket_list[index];
 }
 
 
@@ -208,7 +216,7 @@ std::shared_ptr<Socket> SocketManager::ClientSocket()
 	}
 	else
 	{
-		throw new std::exception("ClientSocket() cannot be called when there is no outgoing connections.");
+		throw new std::exception("ClientSocket() cannot be called when there are no outgoing connections.");
 	}
 }
 
@@ -230,4 +238,26 @@ void SocketManager::DisconnectAll()
 	{
 		Disconnect(i);
 	}
+}
+
+/**
+* Checks if a specific socket is still connected to the server
+*/
+FYPSocketStatus SocketManager::SocketConnected(int socket)
+{
+	if (socket < 0)
+	{
+		return FYP_SOCK_FAILURE;
+	}
+
+	char b;
+	if (recv(socket_list[socket]->GetSocket(), &b, 1, MSG_PEEK) == SOCKET_ERROR)
+	{
+		if (WSAGetLastError() != WSAEWOULDBLOCK)
+		{
+			return FYP_SOCK_FAILURE;
+		}
+	}
+
+	return FYP_SOCK_SUCCESS;
 }
