@@ -18,7 +18,7 @@ public:
 
 	// Delete player by name or socket
 	void RemovePlayer(std::string player_name);
-	void RemovePlayer(SOCKET socket);
+	void RemovePlayer(int id);
 
 	// Get all plyers
 	std::map<std::string, std::shared_ptr<Player>> GetPlayerList();

@@ -39,12 +39,24 @@ int ZoneServer::Run()
 
 			if (message_size == 0 or socket_manager->SocketConnected(i) == FYP_SOCK_FAILURE)
 			{
+				for (auto s : socket_manager->GetSocketList())
+				{
+					if (s != socket_manager->GetSocket(i))
+					{
+						std::cout << "[GameServer] Telling " << player_manager->GetPlayer(s->GetSocket())->player_name << " that " << player_manager->GetPlayer(socket_manager->GetSocket(i)->GetSocket())->player_name << " disconnected." << std::endl;
+						
+						s->GetBuffer(0)->ClearBuffer();
+						s->GetBuffer(0)->AddValue("packet", FYPGP_ON_PLAYERDISCONNECT);
+						s->GetBuffer(0)->AddValue("character", player_manager->GetPlayer(socket_manager->GetSocket(i)->GetSocket())->player_name);
+						s->Dispatch(0);
+					}
+				}
+
 				std::cout << "[ZoneServer] Socket: " << socket_manager->GetSocket(i)->GetSocket() << " disconnected." << std::endl;
 				player_manager->RemovePlayer(socket_manager->GetSocket(i)->GetSocket());
 				socket_manager->Disconnect(i);
 			}
-
-			if (message_size > 0)
+			else if(message_size > 0)
 			{
 				std::string _raw_data = socket_manager->GetSocket(i)->ReadMessage(message_size);
 				PacketData message = PacketData(std::string(_raw_data));
@@ -97,43 +109,49 @@ int ZoneServer::Run()
 						}
 						else if (message.GetValue("packet") == std::to_string(FYPGP_ON_UPDATEPOS))
 						{
-							std::cout << "[ZoneServer] Updated position for: " << message.GetValue("character") << std::endl;
+							//std::cout << "[ZoneServer] Packet from: Player(" << player_manager->GetPlayer(socket_manager->GetSocket(i)->GetSocket())->player_name << ")" << std::endl;
 
-							player_manager->GetPlayer(message.GetValue("character"))->player_pos["x"] = stoi(message.GetValue("x"));
-							player_manager->GetPlayer(message.GetValue("character"))->player_pos["y"] = stoi(message.GetValue("y"));
-							player_manager->GetPlayer(message.GetValue("character"))->player_pos["angle"] = stoi(message.GetValue("angle"));
-
-							for (auto s : socket_manager->GetSocketList())
+							try
 							{
-								if (s != socket_manager->GetSocket(i))
+								//std::cout << "[ZoneServer] Updated position for: " << message.GetValue("character") << std::endl;
+
+								player_manager->GetPlayer(message.GetValue("character"))->player_pos["x"] = stoi(message.GetValue("x"));
+								player_manager->GetPlayer(message.GetValue("character"))->player_pos["y"] = stoi(message.GetValue("y"));
+								player_manager->GetPlayer(message.GetValue("character"))->player_pos["angle"] = stoi(message.GetValue("angle"));
+
+								for (auto s : socket_manager->GetSocketList())
 								{
-									s->GetBuffer(0)->ClearBuffer();
-									s->GetBuffer(0)->AddValue("packet", std::to_string(FYPGP_ON_UPDATEPOS));
-									s->GetBuffer(0)->AddValue("character", message.GetValue("character"));
-									s->GetBuffer(0)->AddValue("x", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["x"]));
-									s->GetBuffer(0)->AddValue("y", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["y"]));
-									s->GetBuffer(0)->AddValue("angle", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["angle"]));
-									s->Dispatch(0);
+									if (s != socket_manager->GetSocket(i))
+									{
+										s->GetBuffer(0)->ClearBuffer();
+										s->GetBuffer(0)->AddValue("packet", std::to_string(FYPGP_ON_UPDATEPOS));
+										s->GetBuffer(0)->AddValue("character", message.GetValue("character"));
+										s->GetBuffer(0)->AddValue("x", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["x"]));
+										s->GetBuffer(0)->AddValue("y", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["y"]));
+										s->GetBuffer(0)->AddValue("angle", std::to_string(player_manager->GetPlayer(message.GetValue("character"))->player_pos["angle"]));
+										s->Dispatch(0);
+									}
 								}
+							}
+							catch (std::exception ex)
+							{
+								std::cout << ex.what() << std::endl;
 							}
 						}
 						else
 						{
+							//std::cout << "[ZoneServer] Packet from: Player(" << player_manager->GetPlayer(socket_manager->GetSocket(i)->GetSocket())->player_name << ")" << std::endl;
+							
 							socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYP_ON_INVALID_PACKET);
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("message", std::string("Unknown packet ID " + message.GetValue("packet")));
 							socket_manager->GetSocket(i)->Dispatch(0);
 						}
-
-
 					}
 					catch (std::exception e)
 					{
 						// Error in client request
 						std::cout << "[ZoneServer] Exception Caught: " << e.what() << std::endl;
-
-						// Disconenct client to send it back to menu screen
-						socket_manager->Disconnect(i);
 					}
 				}
 				else

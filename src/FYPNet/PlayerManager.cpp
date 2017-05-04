@@ -26,18 +26,24 @@ void PlayerManager::RemovePlayer(std::string player_name)
 {
 	SOCKET s = name_to_player_list[player_name]->player_socket->GetSocket();
 
-	name_to_player_list.erase(player_name);
+	std::cout << "[PlayerManager] RemovePlayer(by SOCKET): Removing player [" << player_name << "] on socket [" << s << "]." << std::endl;
 
+	name_to_player_list.erase(player_name);
 	socket_to_player_list.erase(s);
+	
+	std::cout << "s2p: " << socket_to_player_list.size() << ", n2p: " << name_to_player_list.size() << std::endl;
 }
 
-void PlayerManager::RemovePlayer(SOCKET socket)
+void PlayerManager::RemovePlayer(int id)
 {
-	std::string n = socket_to_player_list[socket]->player_name;
+	std::string n = socket_to_player_list[id]->player_name;
 
-	socket_to_player_list.erase(socket);
+	std::cout << "[PlayerManager] RemovePlayer(by SOCKET): Removing player [" << n << "] on socket [" << id << "]." << std::endl;
 
+	socket_to_player_list.erase(id);
 	name_to_player_list.erase(n);
+
+	std::cout << "s2p: " << socket_to_player_list.size() << ", n2p: " << name_to_player_list.size() << std::endl;
 }
 
 std::map<std::string, std::shared_ptr<Player>> PlayerManager::GetPlayerList()
