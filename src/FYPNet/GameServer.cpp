@@ -33,6 +33,10 @@ int GameServer::Run()
 		engine_running = false;
 	}
 
+	// For safety because connecting two of the same hard-coded characters will cause an error when one disconnects
+	// We lose the reference entirely to the last character of the same name
+	int unique_player = 0;
+
 	while (engine_running)
 	{
 		int new_client = socket_manager->Accept(true);
@@ -88,8 +92,8 @@ int GameServer::Run()
 							// Send back some character data.
 							socket_manager->GetSocket(i)->GetBuffer(0)->ClearBuffer();
 							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("packet", FYPGP_ON_GETCHARS);
-							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("0", std::string("XenoWarrior:0:male;8;0;0;1;0;1;0;1;1;7;0;-1;4;7;3;0;0;0;1;0;0;0;1;7;5;0;1;5:13:37:0"));
-							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("1", std::string("Zenro45:0:male;10;4;2;3;2;3;0;7;3;10;2;3;1;0;0;0;0;0;4;2;0;0;0;0;0;0;3;1:2:334:0"));
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("0", std::string("XenoWarrior_" + std::to_string(unique_player++) + ":0:male;8;0;0;1;0;1;0;1;1;7;0;-1;4;7;3;0;0;0;1;0;0;0;1;7;5;0;1;5:13:37:0"));
+							socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("1", std::string("Zenro45_" + std::to_string(unique_player++) + ":0:male;10;4;2;3;2;3;0;7;3;10;2;3;1;0;0;0;0;0;4;2;0;0;0;0;0;0;3;1:2:334:0"));
 							//socket_manager->GetSocket(i)->GetBuffer(0)->AddValue("2", std::string("TestPleb:0:female;1;0;0;1;0;1;0;1;1;1;0;-1;1;0;0;0;0;0;1;0;0;0;0;0;0;0;1;0:24:4450:0"));
 							socket_manager->GetSocket(i)->Dispatch(0);
 						}
